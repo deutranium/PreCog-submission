@@ -3,6 +3,15 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+# CONSTANTS
+
+follower_desc = """Distribution of users according to the number of their followers.
+    
+- **X-axis:**  The numbers 0-100 shown there are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
+
+- **Y-axis:** The number of users with followers in interval $$[x \\cdot \\frac{range}{100}, (x+1) \\cdot \\frac{range}{100})$$"""
+
+
 def main():
     PAGES = {
         "Introduction": introduction,
@@ -24,7 +33,64 @@ stuff = load_data()
 
 def plot_area(df, range):
     hist_values = np.histogram(df, bins=100, range=(0,range))[0]
+    print(hist_values)
     st.area_chart(hist_values)
+    
+# User follower count
+def user_followers_count():
+    st.subheader("User follower count")
+    st.markdown(follower_desc)
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of followers", 0, 5000, value=500)
+    # getting plot data
+    df = pd.DataFrame(stuff, columns=['user_followers_count'])
+    # plot
+    plot_area(df, range)
+    # Explanations
+    st.markdown("**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$\\frac{25 \\cdot 1000}{100} = 250$$ to $$250+10 = 260$$")    
+
+# User following count
+def user_following_count():
+    st.subheader("User following count")
+    st.markdown("""Distribution of users according to the number of people they are following, or "friends" according to twitter lingo.""")
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of people the user is following", 0, 5000, value=500)
+    # getting plot data
+    df = pd.DataFrame(stuff, columns=['user_friends_count'])
+    # plot
+    plot_area(df, range)
+    # Explanations
+    st.markdown("**Explanation:** Same as the previous plot")
+
+# User posts count
+def user_posts_count():
+    st.subheader("User posts count")
+    st.markdown("""Distribution of users according to the number of posts they have created""")
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of posts the user has created", 0, 5000, value=500)
+    # getting plot data
+    df = pd.DataFrame(stuff, columns=['user_statuses_count'])
+    # plot
+    plot_area(df, range)
+    # Explanations
+    st.markdown("**Explanation:** Same as the previous plot")
+
+# User favourites count
+def user_favourites_count():
+    st.subheader("User favourites count")
+    st.markdown("""Distribution of users according to the number of posts they have liked""")
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of posts the user has liked", 0, 5000, value=500)
+    # getting plot data
+    df = pd.DataFrame(stuff, columns=['user_favourites_count'])
+    # plot
+    plot_area(df, range)
+    # Explanations
+    st.markdown("**Explanation:** Same as the previous plot")
 
 # PAGES
 
@@ -100,24 +166,12 @@ def user_analysis():
     `user_id`, `user_screen_name`, `user_followers_count`, `user_friends_count`, `user_created_at`, `user_favourites_count`, `user_statuses_count`, `user_lang`, `user_verified`, `user_location`
     """)
 
-    # User follower count
-    st.subheader("User follower count")
-    st.markdown("""The chart below shows the distribution of users according to the number of their followers.
-    
-- **X-axis:**  The numbers 0-100 shown there are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
+    # Charts
+    user_followers_count()
+    user_following_count()
+    user_posts_count()
+    user_favourites_count()
 
-- **Y-axis:** The number of users with followers in interval $$[x \\cdot \\frac{range}{100}, (x+1) \\cdot \\frac{range}{100})$$
-
-   """)
-
-    # slider to select range
-    range = st.slider("Select the upper limit to number of followers", 0, 5000, value=1000)
-    # getting plot data
-    df = pd.DataFrame(stuff, columns=['user_followers_count'])
-    # plot
-    plot_area(df, range)
-    # Explanations
-    st.markdown("**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$\\frac{25 \\cdot 1000}{100} = 250$$ to $$250+10 = 260$$")    
 
 def tweet_analysis():
     st.header("Tweet Analysis")
