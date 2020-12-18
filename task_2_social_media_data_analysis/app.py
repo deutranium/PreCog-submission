@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 
 def main():
     PAGES = {
@@ -11,6 +14,20 @@ def main():
     st.sidebar.header("Contents")
     page = st.sidebar.selectbox("Select section", options=list(PAGES.keys()))
     PAGES[page]()
+
+@st.cache
+def load_data():
+    data = pd.read_csv('data_final.csv', nrows=11000)
+    return data
+
+stuff = load_data()
+
+def user_follower(range):
+    df = pd.DataFrame(stuff, columns=['user_followers_count'])
+    hist_values = np.histogram(df, bins=100, range=(0,range))[0]
+    st.area_chart(hist_values)
+
+# PAGES
 
 # intro page
 def introduction():
@@ -27,6 +44,10 @@ def introduction():
     2. **Tweet Analysis:**
     Study the properties of tweets, like distribution across dates, language, geo location etc.
     """)
+
+    st.subheader("Data")
+    st.write(stuff)
+
 
     # How to use
     st.subheader("How to use?")
@@ -79,6 +100,15 @@ def user_analysis():
     st.markdown("""
     `user_id`, `user_screen_name`, `user_followers_count`, `user_friends_count`, `user_created_at`, `user_favourites_count`, `user_statuses_count`, `user_lang`, `user_verified`, `user_location`
     """)
+
+    # User follower count
+    st.subheader("User follower count")
+    st.markdown("""The chart below shows the distribution of users according to the number of their followers.
+    
+- **X-axis:**  The numbers 0-100 shown their are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
+    """)
+    range = st.slider("Select the upper limit to number of followers", 0, 5000, value=1000)
+    user_follower(range)
     
 
 def tweet_analysis():
