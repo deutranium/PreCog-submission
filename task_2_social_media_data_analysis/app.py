@@ -22,8 +22,7 @@ def load_data():
 
 stuff = load_data()
 
-def user_follower(range):
-    df = pd.DataFrame(stuff, columns=['user_followers_count'])
+def plot_area(df, range):
     hist_values = np.histogram(df, bins=100, range=(0,range))[0]
     st.area_chart(hist_values)
 
@@ -105,11 +104,20 @@ def user_analysis():
     st.subheader("User follower count")
     st.markdown("""The chart below shows the distribution of users according to the number of their followers.
     
-- **X-axis:**  The numbers 0-100 shown their are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
-    """)
+- **X-axis:**  The numbers 0-100 shown there are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
+
+- **Y-axis:** The number of users with followers in interval $$[x \\cdot \\frac{range}{100}, (x+1) \\cdot \\frac{range}{100})$$
+
+   """)
+
+    # slider to select range
     range = st.slider("Select the upper limit to number of followers", 0, 5000, value=1000)
-    user_follower(range)
-    
+    # getting plot data
+    df = pd.DataFrame(stuff, columns=['user_followers_count'])
+    # plot
+    plot_area(df, range)
+    # Explanations
+    st.markdown("**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$\\frac{25 \\cdot 1000}{100} = 250$$ to $$250+10 = 260$$")    
 
 def tweet_analysis():
     st.header("Tweet Analysis")
