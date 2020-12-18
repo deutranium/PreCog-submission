@@ -33,7 +33,6 @@ stuff = load_data()
 
 def plot_area(df, range):
     hist_values = np.histogram(df, bins=100, range=(0,range))[0]
-    print(hist_values)
     st.area_chart(hist_values)
     
 # User follower count
