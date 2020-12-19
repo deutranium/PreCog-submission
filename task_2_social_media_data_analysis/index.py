@@ -32,7 +32,7 @@ csvWriter = csv.writer(csvFile)
 csvWriter.writerow(["tweet_id", "tweet_full_text", "tweet_created_at", "tweet_lang", "hashtags", "tweet_retweet_count", "tweet_favorite_count", "tweet_place", "user_id", "user_screen_name", "user_followers_count", "user_friends_count", "user_created_at", "user_favourites_count", "user_statuses_count", "user_lang", "user_verified", "user_location"])
 i = 1
 
-tweets = tweepy.Cursor(api.search, tweet_mode="extended", q="#HathrasCase exclude:retweets").items(11000)
+tweets = tweepy.Cursor(api.search, tweet_mode="extended", q="#FarmersDyingModiEnjoying exclude:retweets").items(11000)
 
 while(True):
     try:

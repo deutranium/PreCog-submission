@@ -70,7 +70,7 @@ def main():
 
 @st.cache
 def load_data():
-    data = pd.read_csv('data_final.csv', nrows=11000)
+    data = pd.read_csv('./data_final.csv', nrows=11000)
     return data
 
 stuff = load_data()
@@ -197,7 +197,6 @@ def user_verified():
 
     num_false = int((stuff_df['user_verified'].values == False).sum())
     num_true = int((stuff_df['user_verified'].values == True).sum())
-    print(type(num_true))
     pie_options = {
         "backgroundColor": "#2c343c",
         "title": {
@@ -249,7 +248,6 @@ def tweet_lang():
     st.markdown("""One of the issues of concern here are the language codes. For example, for `in` code, there isn't an entry in `BCP47 language codes` and manually looking at the tweets with this language classification resulted in tweets from Hindi, English and Punjabi. I believe this classification can be improved by using an external library to classify the tweets.""")
 
     a = stuff_df['tweet_lang'].value_counts()
-    print(a)
     lang_data = []
     for i,v in a.items():
         lang_data.append({"value": v, "name": i})
