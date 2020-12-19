@@ -38,6 +38,13 @@ We can look at how the number of tweets per day with this hashtag have changed. 
 intro_issues = """One of the major issues I faced was because of the limit set by Twitter API to get only a certain number of tweets every 15 minutes, resulting in numerous `ConnectionRefused` errors, going through tons of pages on StackOverflow, and Twitter API documentation and finally somehow getting it to work xD
 
 The other issue faced was that some trending hashtags didn't have the required number of tweets at the time of fetching, resulting in checking for hashtags with 10k+ tweets instead of the one top in trending."""
+insights_user = """- It was observed that almost all the **11,000** users from the given corpus are not verified with only **12** having the verification tags.
+
+**Can we draw any insights about the users' followers and friends?**
+
+- Moreover, looking at the area charts below, we can see that there is a higher number of users who have followers <300 and friends <1000 and the number of users decreases as we go towards higher number of friends/followers.
+
+- One more thing to notice is that on an average a person has higher number of friends that followers. In the graphs below we can clearly see that the density in **Friends graph** is more than that in **Followers graph**."""
 follower_desc = """Distribution of users according to the number of their followers.
     
 - **X-axis:**  The numbers 0-100 shown there are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
@@ -243,10 +250,9 @@ def introduction():
     # What is this
     st.subheader("What is this?")
     st.markdown(intro_what)
-
     st.subheader("Data")
     st.write(stuff)
-
+    st.markdown("-----")
 
     # How to use
     st.subheader("How to use?")
@@ -254,10 +260,12 @@ def introduction():
 
     st.subheader("How this works")
     st.markdown(intro_how_works)
+    st.markdown("-----")
 
     # How can this be improved
     st.subheader("How can this be improved?")
     st.markdown(intro_how_improve)
+    st.markdown("-----")
 
     # Issues faced
     st.subheader("Issues faced")
@@ -265,17 +273,30 @@ def introduction():
 
 def user_analysis():
     st.header("User Analysis")
+
+    # Columns
     st.subheader("Columns analyzed")
     st.markdown("""
     `user_id`, `user_screen_name`, `user_followers_count`, `user_friends_count`, `user_created_at`, `user_favourites_count`, `user_statuses_count`, `user_lang`, `user_verified`, `user_location`
     """)
+    st.markdown("-----")
+
+    # Insights
+    st.subheader("Insights (What can we say about the users who tweeted this hashtag?)")
+    st.markdown(insights_user)
+    st.markdown("-----")
 
     # Charts
     user_followers_count()
+    st.markdown("-----")
     user_following_count()
+    st.markdown("-----")
     user_verified()
+    st.markdown("-----")
     user_posts_count()
+    st.markdown("-----")
     user_favourites_count()
+    st.markdown("-----")
     user_loc()
 
 
