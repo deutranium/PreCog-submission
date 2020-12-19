@@ -70,7 +70,7 @@ def main():
 
 @st.cache
 def load_data():
-    data = pd.read_csv('./data_final.csv', nrows=11000)
+    data = pd.read_csv('data_final.csv')
     return data
 
 stuff = load_data()
