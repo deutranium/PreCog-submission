@@ -25,7 +25,7 @@ For a detailed explanantion, you may go through the [code](https://github.com/de
 intro_how_improve = """At present, there is a very primitive analysis which is more of displaying visualisations for the numeric data. For future, we can look into the following:
         
 1. **Network Graphs:**
-We can try creating network graphs and look for possible nodes. These nodes can be news channels, parties affected and/or political figures according to the nature of tweets.
+We can try creating network graphs for users and look for possible nodes. These nodes can be news channels, parties affected and/or political figures according to the nature of tweets.
 
 2. **Relation to other topics:**
 We can look at the hashtags most common apart from the `#FarmersDyingModiEnjoying` and how frequently they appear together. This can give an insight into how this case relates to other topics.
@@ -51,7 +51,10 @@ follower_desc = """Distribution of users according to the number of their follow
 
 - **Y-axis:** The number of users with followers in interval $$[x \\cdot \\frac{range}{100}, (x+1) \\cdot \\frac{range}{100})$$"""
 follower_explanation = "**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$\\frac{25 \\cdot 1000}{100} = 250$$ to $$250+10 = 260$$"
-
+tweet_insights = """We can clearly see from the pie chart below that **English**, **Hindi** and **Punjabi** are the first, second and third most common languages respectively which is very well justified looking at the nature of the hashtag `#FarmersDyingModiEnjoying` which has the most participation from the population of Delhi-NCR, Haryana and Punjab.
+    
+One surprising thing I noticed was the presence of a significant number of tweets in languages like **French** (for `fr`) which are not so common in India"""
+language_codes = {'en': 'English', 'ar': 'Arabic', 'bn': 'Bengali', 'cs': 'Czech', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'es': 'Spanish', 'fa': 'Persian', 'fi': 'Finnish', 'fil': 'Filipino', 'fr': 'French', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'msa': 'Malay', 'nl': 'Dutch', 'no': 'Norwegian', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'th': 'Thai', 'tr': 'Turkish', 'uk': 'Ukrainian', 'ur': 'Urdu', 'vi': 'Vietnamese', 'zh-cn': 'Chinese', 'zh-tw': 'Chinese'}
 
 def main():
     PAGES = {
@@ -134,6 +137,59 @@ def user_favourites_count():
     # Explanations
     st.markdown("**Explanation:** Same as the previous plot")
 
+# User location distribution
+def user_loc():
+    st.subheader("Users with 'India' in location")
+    total_locations = int(stuff_df['user_location'].count())
+    with_India = int(stuff_df['user_location'].str.contains("India").sum())
+    info = f"P.S. This does not mean that only the users with term 'India' reside in India. Out of 11,000 users, {(total_locations - with_India):,} didn't have any location specified. Apart from this, there were also cases with locations like `Chandigarh` where the user didn't explicitly mention `India`"
+    st.markdown(info)
+
+    pie_options = {
+        "backgroundColor": "#2c343c",
+        "title": {
+            "text": "Users with India in location",
+            "left": "center",
+            "top": 20,
+            "textStyle": {"color": "#ccc"},
+        },
+        "tooltip": {"trigger": "item", "formatter": "{a} <br/>{b} : {c} ({d}%)"},
+        "visualMap": {
+            "show": False,
+            "min": 0,
+            "max": 600,
+            "inRange": {"colorLightness": [0.1, 0.6]},
+        },
+        "series": [
+            {
+                "name": "Users with India in location",
+                "type": "pie",
+                "radius": "55%",
+                "center": ["50%", "50%"],
+                "data": [
+                    {"value": (total_locations - with_India), "name": "Without India"},
+                    {"value": with_India, "name": "With India"},
+                ],
+                "roseType": "radius",
+                "label": {"color": "rgba(255, 255, 255, 0.3)"},
+                "labelLine": {
+                    "lineStyle": {"color": "rgba(255, 255, 255, 0.3)"},
+                    "smooth": 0.2,
+                    "length": 10,
+                    "length2": 20,
+                },
+                "itemStyle": {
+                    "color": "#c23531",
+                    "shadowBlur": 200,
+                    "shadowColor": "rgba(0, 0, 0, 0.5)",
+                },
+                "animationType": "scale",
+                "animationEasing": "elasticOut",
+            }
+        ],
+    }
+    st_echarts(options=pie_options)
+
 # User verification distribution
 def user_verified():
     st.subheader("User Verification")
@@ -187,40 +243,40 @@ def user_verified():
     }
     st_echarts(options=pie_options)
 
-# User location distribution
-def user_loc():
-    st.subheader("Users with 'India' in location")
-    total_locations = int(stuff_df['user_location'].count())
-    with_India = int(stuff_df['user_location'].str.contains("India").sum())
-    info = f"P.S. This does not mean that only the users with term 'India' reside in India. Out of 11,000 users, {(total_locations - with_India):,} didn't have any location specified. Apart from this, there were also cases with locations like `Chandigarh` where the user didn't explicitly mention `India`"
-    st.markdown(info)
+def tweet_lang():
+    st.subheader("Tweet Language")
+    st.markdown("""Distribution of tweets among languages. By hovering over a section of the pie chart, you can see the BCP47 language tag of the language concerned.""")
+    st.markdown("""One of the issues of concern here are the language codes. For example, for `in` code, there isn't an entry in `BCP47 language codes` and manually looking at the tweets with this language classification resulted in tweets from Hindi, English and Punjabi. I believe this classification can be improved by using an external library to classify the tweets.""")
+
+    a = stuff_df['tweet_lang'].value_counts()
+    print(a)
+    lang_data = []
+    for i,v in a.items():
+        lang_data.append({"value": v, "name": i})
 
     pie_options = {
         "backgroundColor": "#2c343c",
         "title": {
-            "text": "Users with India in location",
+            "text": "Top 10 languages",
             "left": "center",
             "top": 20,
             "textStyle": {"color": "#ccc"},
         },
         "tooltip": {"trigger": "item", "formatter": "{a} <br/>{b} : {c} ({d}%)"},
         "visualMap": {
-            "show": False,
-            "min": 0,
-            "max": 600,
-            "inRange": {"colorLightness": [0.1, 0.6]},
+            # "show": False,
+            # "min": 80,
+            # "max": 600,
+            # "inRange": {"colorLightness": [0.2, 0.6]},
         },
         "series": [
             {
-                "name": "Users with India in location",
+                "name": "Distribution among languages",
                 "type": "pie",
                 "radius": "55%",
                 "center": ["50%", "50%"],
-                "data": [
-                    {"value": (total_locations - with_India), "name": "Without India"},
-                    {"value": with_India, "name": "With India"},
-                ],
-                "roseType": "radius",
+                "data": lang_data[1:10],
+                # "roseType": "radius",
                 "label": {"color": "rgba(255, 255, 255, 0.3)"},
                 "labelLine": {
                     "lineStyle": {"color": "rgba(255, 255, 255, 0.3)"},
@@ -231,7 +287,7 @@ def user_loc():
                 "itemStyle": {
                     "color": "#c23531",
                     "shadowBlur": 200,
-                    "shadowColor": "rgba(0, 0, 0, 0.5)",
+                    "shadowColor": "rgba(200, 0, 0, 0.5)",
                 },
                 "animationType": "scale",
                 "animationEasing": "elasticOut",
@@ -239,6 +295,10 @@ def user_loc():
         ],
     }
     st_echarts(options=pie_options)
+
+    st.markdown("----")
+    st.markdown("*The dashboard is obviously incomplete as I planned to add some more visualisations including ones with geo-location etc. I'm not sure if I'll be able to do it right now because of time constraints, but I'll definitely give it a shot later*")
+
 
 # --------------------------------------------
 # PAGES
@@ -306,5 +366,11 @@ def tweet_analysis():
     st.markdown("""
     `tweet_id`, `tweet_full_text`, `tweet_created_at`, `tweet_lang`, `hashtags`, `tweet_retweet_count`, `tweet_favorite_count`, `tweet_place`
     """)
+
+    st.subheader("Insights")
+    st.markdown(tweet_insights)
+
+    st.markdown("----")
+    tweet_lang()
 
 main()
