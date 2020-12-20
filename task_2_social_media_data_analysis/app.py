@@ -12,45 +12,45 @@ Study the properties of user who tweeted, like if they are verified or not, thei
 
 2. **Tweet Analysis:**
 Study the properties of tweets, like distribution across dates, language, geo location etc."""
-intro_how_use = """You may select the the category for the analysis you would like to view using the sidebar you see at the left and navigate throughout the page using the same."""
-intro_how_works = """I have used the following tools and libraries to make this project:
+intro_how_use = """Select the the category for the analysis you would like to view using the left sidebar."""
+intro_how_works = """Tools used:
         
 - **[Streamlit](https://www.streamlit.io/):** To display the visualisations
-- **[Tweepy](https://www.tweepy.org/):** The Python library to get data
-- **[Streamlit-Echarts](https://github.com/andfanilo/streamlit-echarts):** The streamlit component used to visualise data
+- **[Tweepy](https://www.tweepy.org/):** Python library to get Twitter data
+- **[Streamlit-Echarts](https://github.com/andfanilo/streamlit-echarts):** Streamlit component used to help visualise data
 
 The basic workflow included creating a `csv` file with the data collected using `tweepy`, linking it to `streamlit` and using the `streamlit-echarts` module to display the visualisations
 
-For a detailed explanantion, you may go through the [code](https://github.com/deutranium/PreCog-submission) which has been properly commented for easier understanding."""
-intro_how_improve = """At present, there is a very primitive analysis which is more of displaying visualisations for the numeric data. For future, we can look into the following:
+For a detailed explanantion, you may go through the [code](https://github.com/deutranium/PreCog-submission)."""
+intro_how_improve = """At present, the analysis is more of displaying visualisations for the direct numeric data. For the future, we can look into the following:
         
 1. **Network Graphs:**
-We can try creating network graphs for users and look for possible nodes. These nodes can be news channels, parties affected and/or political figures according to the nature of tweets.
+Creating network graphs for users and look for possible nodes. These nodes can possibly be news channels, parties affected and/or political figures according to the nature of tweets.
 
 2. **Relation to other topics:**
-We can look at the hashtags most common apart from the `#FarmersDyingModiEnjoying` and how frequently they appear together. This can give an insight into how this case relates to other topics.
+Look at the hashtags most common apart from the `#FarmersDyingModiEnjoying` and how frequently they appear together. This can give an insight into how this case relates to other topics.
 
 3. **Geographical Analysis:**
-We can plot the locations of the tweets (which are geo-location enabled) and analyze the certian *hotspots* which might be there along with getting an insight into the international participation.
+Plot the locations of the tweets (which are geo-location enabled) and analyze the certian *hotspots* which might be there along with getting an insight into the international participation.
 
 4. **Timeline:**
-We can look at how the number of tweets per day with this hashtag have changed. We might see a spike near the days of incident, judgements, investigation etc. and analyze how the curve of participation changes."""
+Look at how the number of tweets per day with this hashtag have changed. We might see a spike near the days of incident, judgements, investigation etc. and analyze how the curve of participation changes."""
 intro_issues = """One of the major issues I faced was because of the limit set by Twitter API to get only a certain number of tweets every 15 minutes, resulting in numerous `ConnectionRefused` errors, going through tons of pages on StackOverflow, and Twitter API documentation and finally somehow getting it to work xD
 
-The other issue faced was that some trending hashtags didn't have the required number of tweets at the time of fetching, resulting in checking for hashtags with 10k+ tweets instead of the one top in trending."""
+The other hiccup on the way was some trending hashtags not having the required number of tweets(~10k) at the time of fetching, resulting in checking for hashtags with 10k+ tweets too instead of directly picking the top trending one."""
 insights_user = """- It was observed that almost all the **11,000** users from the given corpus are not verified with only **12** having the verification tags.
 
 **Can we draw any insights about the users' followers and friends?**
 
-- Moreover, looking at the area charts below, we can see that there is a higher number of users who have followers <300 and friends <1000 and the number of users decreases as we go towards higher number of friends/followers.
+- Moreover, looking at the area charts below, the number of users decreases as we go towards higher number of friends/followers, and there is a significantly higher concentration of users with followers < 300 and friends < 1000.
 
-- One more thing to notice is that on an average a person has higher number of friends that followers. In the graphs below we can clearly see that the density in **Friends graph** is more than that in **Followers graph**."""
+- One other conclusion can be the higher number of friends than followers for an average user from the corpus which can be clearly seen from the density of **Friends graph** being more than that of **Followers graph**."""
 follower_desc = """Distribution of users according to the number of their followers.
     
 - **X-axis:**  The numbers 0-100 shown there are the divisions of the sample space where the sample space is the range 0 to the value you select in the slider below.
 
-- **Y-axis:** The number of users with followers in interval $$[x \\cdot \\frac{range}{100}, (x+1) \\cdot \\frac{range}{100})$$"""
-follower_explanation = "**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$\\frac{25 \\cdot 1000}{100} = 250$$ to $$250+10 = 260$$"
+- **Y-axis:** The number of users with followers in `x%` to `(x+1)%` of the **upper limit**"""
+follower_explanation = "**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$25\% \ of \ 1000 = 250$$ to $$26\% \ of \ 1000 = 260$$"
 tweet_insights = """We can clearly see from the pie chart below that **English**, **Hindi** and **Punjabi** are the first, second and third most common languages respectively which is very well justified looking at the nature of the hashtag `#FarmersDyingModiEnjoying` which has the most participation from the population of Delhi-NCR, Haryana and Punjab.
     
 One surprising thing I noticed was the presence of a significant number of tweets in languages like **French** (for `fr`) which are not so common in India"""
@@ -193,7 +193,7 @@ def user_loc():
 # User verification distribution
 def user_verified():
     st.subheader("User Verification")
-    st.markdown("""Distribution of users based on their Twitter verification. Here you can clearly see that almost all the users from this corpus are not verified""")
+    st.markdown("""Distribution of users based on their Twitter verification. Here you can clearly see that almost all the users from this corpus are not verified.""")
 
     num_false = int((stuff_df['user_verified'].values == False).sum())
     num_true = int((stuff_df['user_verified'].values == True).sum())
