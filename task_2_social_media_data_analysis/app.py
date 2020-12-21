@@ -90,6 +90,8 @@ def user_followers_count():
     df = stuff_df['user_followers_count']
     max_val = int(df.max())
     min_val = int(df.min())
+    avg_val = int(df.mean())
+
     # slider to select range
     range = st.slider("Select the upper limit to number of followers", 0, 20000, value=1000)
     
@@ -99,6 +101,7 @@ def user_followers_count():
     # Explanations
     st.markdown(f"**Maximum number of followers:** {max_val}")
     st.markdown(f"**Minimum number of followers:** {min_val}")
+    st.markdown(f"**Average number of followers:** {avg_val}")
     st.markdown(follower_explanation)    
 
 # User following count
@@ -110,6 +113,7 @@ def user_following_count():
     df = stuff_df['user_friends_count']
     max_val = int(df.max())
     min_val = int(df.min())
+    avg_val = int(df.mean())
 
     # slider to select range
     range = st.slider("Select the upper limit to number of people the user is following", 0, 20000, value=1000)
@@ -119,6 +123,7 @@ def user_following_count():
     # Explanations
     st.markdown(f"**Maximum number of friends:** {max_val}")
     st.markdown(f"**Minimum number of friends:** {min_val}")
+    st.markdown(f"**Average number of friends:** {avg_val}")
     st.markdown("**Explanation:** Same as the previous plot")
 
 # User posts count
@@ -130,6 +135,7 @@ def user_posts_count():
     df = stuff_df['user_statuses_count']
     max_val = int(df.max())
     min_val = int(df.min())
+    avg_val = int(df.mean())
 
     # slider to select range
     range = st.slider("Select the upper limit to number of posts the user has created", 0, 20000, value=1000)
@@ -139,6 +145,7 @@ def user_posts_count():
     # Explanations
     st.markdown(f"**Maximum number of posts by a user:** {max_val}")
     st.markdown(f"**Minimum number of posts by a user:** {min_val}")
+    st.markdown(f"**Average number of posts by a user:** {avg_val}")
     st.markdown("**Explanation:** Same as the previous plot")
 
 # User favourites count
@@ -150,14 +157,16 @@ def user_favourites_count():
     df = stuff_df['user_favourites_count']
     max_val = int(df.max())
     min_val = int(df.min())
+    avg_val = int(df.mean())
 
     # slider to select range
     range = st.slider("Select the upper limit to number of posts the user has liked", 0, 20000, value=1000)
     # plot
     plot_area(df, range)
     # Explanations
-    st.markdown(f"**Maximum number of friends:** {max_val}")
-    st.markdown(f"**Minimum number of friends:** {min_val}")
+    st.markdown(f"**Maximum number of favourites:** {max_val}")
+    st.markdown(f"**Minimum number of favourites:** {min_val}")
+    st.markdown(f"**Average number of favourites:** {avg_val}")
     st.markdown("**Explanation:** Same as the previous plot")
 
 # User location distribution
@@ -165,7 +174,7 @@ def user_loc():
     st.subheader("Users with 'India' in location")
     total_locations = int(stuff_df['user_location'].count())
     with_India = int(stuff_df['user_location'].str.contains("India").sum())
-    info = f"P.S. This does not mean that only the users with term 'India' reside in India. Out of 11,000 users, {(total_locations - with_India):,} didn't have any location specified. Apart from this, there were also cases with locations like `Chandigarh` where the user didn't explicitly mention `India`"
+    info = f"P.S. This does not mean that only the users with term 'India' reside in India. Out of 11,000 users, {(11000 - total_locations):,} didn't have any location specified. Apart from this, there were also cases with locations like `Chandigarh` where the user didn't explicitly mention `India`"
     st.markdown(info)
 
     pie_options = {
