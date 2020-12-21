@@ -51,7 +51,7 @@ follower_desc = """Distribution of users according to the number of their follow
 
 - **Y-axis:** The number of users with followers in `x%` to `(x+1)%` of the **upper limit**"""
 follower_explanation = "**Explanation:** Say the selected value *range* from the slider below is *1000* and hovering the cursor at `x=25` says `index: 25`, `value:176`. This means that there are 176 users who have followers in the interval $$25\% \ of \ 1000 = 250$$ to $$26\% \ of \ 1000 = 260$$"
-tweet_insights = """We can clearly see from the pie chart below that **English**, **Hindi** and **Punjabi** are the first, second and third most common languages respectively which is very well justified looking at the nature of the hashtag `#FarmersDyingModiEnjoying` which has the most participation from the population of Delhi-NCR, Haryana and Punjab.
+tweet_insights = """We can clearly see from the pie chart below that **English**, **Punjabi** and **Hindi** are the first, second and third most common languages respectively which is very well justified looking at the nature of the hashtag `#FarmersDyingModiEnjoying` which has the most participation from the population of Delhi-NCR, Haryana and Punjab.
     
 One surprising thing I noticed was the presence of a significant number of tweets in languages like **French** (for `fr`) which are not so common in India"""
 language_codes = {'en': 'English', 'ar': 'Arabic', 'bn': 'Bengali', 'cs': 'Czech', 'da': 'Danish', 'de': 'German', 'el': 'Greek', 'es': 'Spanish', 'fa': 'Persian', 'fi': 'Finnish', 'fil': 'Filipino', 'fr': 'French', 'he': 'Hebrew', 'hi': 'Hindi', 'hu': 'Hungarian', 'id': 'Indonesian', 'it': 'Italian', 'ja': 'Japanese', 'ko': 'Korean', 'msa': 'Malay', 'nl': 'Dutch', 'no': 'Norwegian', 'pl': 'Polish', 'pt': 'Portuguese', 'ro': 'Romanian', 'ru': 'Russian', 'sv': 'Swedish', 'th': 'Thai', 'tr': 'Turkish', 'uk': 'Ukrainian', 'ur': 'Urdu', 'vi': 'Vietnamese', 'zh-cn': 'Chinese', 'zh-tw': 'Chinese'}
@@ -86,13 +86,19 @@ def user_followers_count():
     st.subheader("User follower count")
     st.markdown(follower_desc)
 
-    # slider to select range
-    range = st.slider("Select the upper limit to number of followers", 0, 5000, value=500)
     # getting plot data
     df = stuff_df['user_followers_count']
+    max_val = int(df.max())
+    min_val = int(df.min())
+    # slider to select range
+    range = st.slider("Select the upper limit to number of followers", 0, 20000, value=1000)
+    
+    
     # plot
     plot_area(df, range)
     # Explanations
+    st.markdown(f"**Maximum number of followers:** {max_val}")
+    st.markdown(f"**Minimum number of followers:** {min_val}")
     st.markdown(follower_explanation)    
 
 # User following count
@@ -100,13 +106,19 @@ def user_following_count():
     st.subheader("User following count")
     st.markdown("""Distribution of users according to the number of people they are following, or "friends" according to twitter lingo.""")
 
-    # slider to select range
-    range = st.slider("Select the upper limit to number of people the user is following", 0, 5000, value=500)
     # getting plot data
     df = stuff_df['user_friends_count']
+    max_val = int(df.max())
+    min_val = int(df.min())
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of people the user is following", 0, 20000, value=1000)
+    
     # plot
     plot_area(df, range)
     # Explanations
+    st.markdown(f"**Maximum number of friends:** {max_val}")
+    st.markdown(f"**Minimum number of friends:** {min_val}")
     st.markdown("**Explanation:** Same as the previous plot")
 
 # User posts count
@@ -114,27 +126,38 @@ def user_posts_count():
     st.subheader("User posts count")
     st.markdown("""Distribution of users according to the number of posts they have created""")
 
-    # slider to select range
-    range = st.slider("Select the upper limit to number of posts the user has created", 0, 5000, value=500)
     # getting plot data
     df = stuff_df['user_statuses_count']
+    max_val = int(df.max())
+    min_val = int(df.min())
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of posts the user has created", 0, 20000, value=1000)
+    
     # plot
     plot_area(df, range)
     # Explanations
+    st.markdown(f"**Maximum number of posts by a user:** {max_val}")
+    st.markdown(f"**Minimum number of posts by a user:** {min_val}")
     st.markdown("**Explanation:** Same as the previous plot")
 
 # User favourites count
 def user_favourites_count():
     st.subheader("User favourites count")
     st.markdown("""Distribution of users according to the number of posts they have liked""")
-
-    # slider to select range
-    range = st.slider("Select the upper limit to number of posts the user has liked", 0, 5000, value=500)
+    
     # getting plot data
     df = stuff_df['user_favourites_count']
+    max_val = int(df.max())
+    min_val = int(df.min())
+
+    # slider to select range
+    range = st.slider("Select the upper limit to number of posts the user has liked", 0, 20000, value=1000)
     # plot
     plot_area(df, range)
     # Explanations
+    st.markdown(f"**Maximum number of friends:** {max_val}")
+    st.markdown(f"**Minimum number of friends:** {min_val}")
     st.markdown("**Explanation:** Same as the previous plot")
 
 # User location distribution
