@@ -13,14 +13,14 @@ path = "./Rec_Task/1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf"
 dfs = tabula.read_pdf(path, pages='all')
 
 # conversion to required format
-dfs1 = dfs[0].to_dict()
-for i,v in dfs1.items():
+dfs_formatted = dfs[0].to_dict()
+for i,v in dfs_formatted.items():
     for j,k in v.items():
         j = str(j)
-    dfs1[i] = k
+    dfs_formatted[i] = k
 
 # insert into collection
-tables_1c1edeee = db["1c1edeee"]
-tables_1c1edeee.insert(dfs1)
+tables_1c1edeee = db["tables_1c1edeee"]
+tables_1c1edeee.insert(dfs_formatted)
 
 # -------------------------
