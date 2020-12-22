@@ -1,17 +1,26 @@
 import tabula
 import camelot
-# "./Rec_Task/1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf" yes.
-# path = "./Rec_Task/1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf"
-# dfs = tabula.read_pdf(path, stream=True)
-# tabula.convert_into("./Rec_Task/1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf", "output.csv", output_format="csv", pages='all')
+import json
+import pymongo
 
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+db = client.PreCog_DB_a
 
-path = "./Rec_Task/a6b29367-f3b7-4fb1-a2d0-077477eac1d9.pdf"
-tables = camelot.read_pdf(path)
-tables.export("o.csv", f="csv", compress=True)
+# File 1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf -------------------------
 
-for i in tables:
-    print(i.parsing_report)
+# Get table
+path = "./Rec_Task/1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf"
+dfs = tabula.read_pdf(path, pages='all')
 
-# tabula.convert_into("./Rec_Task/d9f8e6d9-660b-4505-86f9-952e45ca6da0.pdf", "output.csv", output_format="csv", pages='all')
-# print(dfs[0])
+# conversion to required format
+dfs1 = dfs[0].to_dict()
+for i,v in dfs1.items():
+    for j,k in v.items():
+        j = str(j)
+    dfs1[i] = k
+
+# insert into collection
+tables_1c1edeee = db["1c1edeee"]
+tables_1c1edeee.insert(dfs1)
+
+# -------------------------
