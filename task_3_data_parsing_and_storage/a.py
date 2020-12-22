@@ -27,7 +27,7 @@ tables_1c1edeee.insert(dfs_formatted)
 
 # File 1c1edeee-a13e-4b2e-90be-eb1dd03c3384.pdf -------------------------
 
-# Get table
+Get table
 path = "./Rec_Task/a6b29367-f3b7-4fb1-a2d0-077477eac1d9.pdf"
 dfs = tabula.read_pdf(path, pages='all')
 
